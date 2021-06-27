@@ -9,22 +9,28 @@ exports.handler = async function (event, context) {
         skill = Alexa.SkillBuilders.custom()
             .addErrorHandlers(ErrorHandler)
             .addRequestHandlers(
-        LaunchRequestHandler,
-        HelloWorldIntentHandler,
-        LookAroundIntentHandler,
-        DoorIntentHandler,
-        UseIntentHandler,
-        UnjamDoorIntentHandler,
-        EnterCodeIntentHandler,
-        HelpIntentHandler,
-        CancelAndStopIntentHandler,
-        FallbackIntentHandler,
-        SessionEndedRequestHandler,
-        IntentReflectorHandler
+                LaunchRequestHandler,
+                HelloWorldIntentHandler,
+                LookAroundIntentHandler,
+                DoorIntentHandler,
+                UseIntentHandler,
+                UnjamDoorIntentHandler,
+                EnterCodeIntentHandler,
+                HelpIntentHandler,
+                CancelAndStopIntentHandler,
+                FallbackIntentHandler,
+                SessionEndedRequestHandler,
+                IntentReflectorHandler,
+                HelpMeIntentHandler,
+                ReceiveHintIntentHandler,
+                LookForDoorsIntentHandler,
+                DescribeRoomIntentHandler,
+                LookForObjectsIntentHandler
+
             ).create();
     }
 
-    
+
 
     const response = await skill.invoke(event, context);
     //console.log('RESPONSE :' + JSON.stringify(response));
@@ -32,10 +38,7 @@ exports.handler = async function (event, context) {
 };
 
 
-// i18n library dependency, we use it below in a localisation interceptor
-const i18n = require('i18next');
-// i18n strings for all supported locales
-const languageStrings = require('./languageStrings');
+
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -71,7 +74,7 @@ const LaunchRequestHandler = {
 
 const LookAroundIntentHandler = {
     canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" 
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'LookAroundIntent';
     },
     handle(handlerInput) {
@@ -79,9 +82,9 @@ const LookAroundIntentHandler = {
         const setup = sessionAttributes.setup
         const room = setup.rooms[sessionAttributes.location]
         let speakOutput = "Du siehst: "
-        if (room.hasOwnProperty("objects")){
-            for (i = 0; i < room.objects.length; i++){
-                if (i < room.objects.length - 2){
+        if (room.hasOwnProperty("objects")) {
+            for (i = 0; i < room.objects.length; i++) {
+                if (i < room.objects.length - 2) {
                     speakOutput += room.objects[i].desc + ", "
                 }
                 else if (i === room.objects.length - 2) {
@@ -94,16 +97,16 @@ const LookAroundIntentHandler = {
             speakOutput += " Außerdem "
         }
 
-        for (i = 0; i < room.connections.length; i++){
-            let roomName = setup.rooms[room.connections[i]].name 
-            speakOutput += "eine Tür zum " + roomName 
-            if (i < room.connections.length - 2 ){
-                speakOutput +=  ", "
+        for (i = 0; i < room.connections.length; i++) {
+            let roomName = setup.rooms[room.connections[i]].name
+            speakOutput += "eine Tür zum " + roomName
+            if (i < room.connections.length - 2) {
+                speakOutput += ", "
             }
-            else if (i === room.connections.length - 2){
+            else if (i === room.connections.length - 2) {
                 speakOutput += " und "
             }
-            else { speakOutput += "."}
+            else { speakOutput += "." }
         }
 
         return handlerInput.responseBuilder
@@ -116,16 +119,132 @@ const LookAroundIntentHandler = {
 function getRoomByName(name, rooms) {
     const roomList = Object.values(rooms)
     for (room of roomList) {
-        if (room.name.localeCompare(name) === 0){
+        if (room.name.localeCompare(name) === 0) {
             return room
         }
     }
     return null
 }
 
+const HelpMeIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'HelpMeIntent';
+    },
+    handle(handlerInput) {
+        // invoke custom logic of the handler
+        //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
+        const speechText = 'This is my custom intent handler';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .withShouldEndSession(false)
+            .getResponse();
+    }
+};
+
+const ReceiveHintIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'ReceiveHintIntent';
+    },
+    handle(handlerInput) {
+        // invoke custom logic of the handler
+        //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
+        const speechText = 'This is my custom intent handler';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .withShouldEndSession(false)
+            .getResponse();
+    }
+};
+
+const LookForDoorsIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'LookForDoorsIntent';
+    },
+    handle(handlerInput) {
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
+        const setup = sessionAttributes.setup
+        const room = setup.rooms[sessionAttributes.location]
+        let speakOutput = "Du siehst: "
+
+        for (i = 0; i < room.connections.length; i++) {
+            let roomName = setup.rooms[room.connections[i]].name
+            speakOutput += "eine Tür zum " + roomName
+            if (i < room.connections.length - 2) {
+                speakOutput += ", "
+            }
+            else if (i === room.connections.length - 2) {
+                speakOutput += " und "
+            }
+            else { speakOutput += "." }
+        }
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+const DescribeRoomIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'DescribeRoomIntent';
+    },
+    handle(handlerInput) {
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
+        const setup = sessionAttributes.setup
+        const room = setup.rooms[sessionAttributes.location]
+
+        let speakOutput = "Du gehst durch die Tür. Du befindest dich in " + room.desc + "."
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+const LookForObjectsIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'LookForObjectsIntent';
+    },
+    handle(handlerInput) {
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
+        const setup = sessionAttributes.setup
+        const room = setup.rooms[sessionAttributes.location]
+        let speakOutput = "Du siehst: "
+        if (room.hasOwnProperty("objects")) {
+            for (i = 0; i < room.objects.length; i++) {
+                if (i < room.objects.length - 2) {
+                    speakOutput += room.objects[i].desc + ", "
+                }
+                else if (i === room.objects.length - 2) {
+                    speakOutput += room.objects[i].desc + " und "
+                }
+                else {
+                    speakOutput += room.objects[i].desc + "."
+                }
+            }
+        }
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+
+
+
+
+
 const DoorIntentHandler = {
     canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" 
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'DoorIntent';
     },
     handle(handlerInput) {
@@ -139,19 +258,19 @@ const DoorIntentHandler = {
 
         let speakOutput = ""
         const neighborNames = []
-        room.connections.forEach( roomString => {
+        room.connections.forEach(roomString => {
             neighborNames.push(setup.rooms[roomString].name)
         })
-        if (!neighborNames.includes(targetRoom)){
+        if (!neighborNames.includes(targetRoom)) {
             speakOutput = "Du kannst diesen Raum von hier nicht erreichen."
         }
         else {
-            if (targetRoom === "Ausgang"){
+            if (targetRoom === "Ausgang") {
                 speakOutput = "Der Ausgang ist verschlossen. Neben der Tür befindet sich eine Tastatur, auf der man offenbar einen Zahlencode eingeben kann."
             }
             else {
                 let newRoom = getRoomByName(targetRoom, setup.rooms)
-                if (targetRoom === setup.rooms.end.name && newRoom.isJammed){
+                if (targetRoom === setup.rooms.end.name && newRoom.isJammed) {
                     speakOutput = "Die Tür ist einen Spalt geöffnet, klemmt aber. Mit einer Brechstange ließe sie sich sicher öffnen."
                 }
                 else {
@@ -166,7 +285,7 @@ const DoorIntentHandler = {
                     else {
                         sessionAttributes.location = targetRoom
                     }
-                    handlerInput.attributesManager.setSessionAttributes(sessionAttributes) 
+                    handlerInput.attributesManager.setSessionAttributes(sessionAttributes)
                 }
             }
         }
@@ -178,29 +297,29 @@ const DoorIntentHandler = {
     }
 }
 
-function openObject(object, handlerInput){
+function openObject(object, handlerInput) {
     var speakOutput = "ERROR"
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
-    if (object.desc === "Hotel-Regeln"){
+    if (object.desc === "Hotel-Regeln") {
         speakOutput = "Du liest die Regeln: " + object.rules
     }
-    else if (!object.hasOwnProperty("content")){
+    else if (!object.hasOwnProperty("content")) {
         speakOutput = "Das Objekt ist leer."
     }
     else {
-        if (object.content === null){
+        if (object.content === null) {
             speakOutput = "Das Objekt ist leer."
         }
         else {
             speakOutput = "Du findest: " + object.content
-            if (object.content === "Eine Brechstange"){
+            if (object.content === "Eine Brechstange") {
                 sessionAttributes.hasCrowbar = true
             }
-            else if (object.content === "Einen Bolzenschneider"){
+            else if (object.content === "Einen Bolzenschneider") {
                 sessionAttributes.hasBoltCutter = true
             }
             else {
-                if (!sessionAttributes.hasOwnProperty("foundHints")){
+                if (!sessionAttributes.hasOwnProperty("foundHints")) {
                     sessionAttributes.foundHints = [object.content]
                 }
                 else {
@@ -209,7 +328,7 @@ function openObject(object, handlerInput){
             }
             object.content = null
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes)
-        } 
+        }
     }
     return speakOutput
 }
@@ -219,7 +338,7 @@ const UseIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'UseIntent';
     },
-    handle(handlerInput){
+    handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
         const setup = sessionAttributes.setup
         const room = setup.rooms[sessionAttributes.location]
@@ -230,24 +349,24 @@ const UseIntentHandler = {
         const toolSlot = slotValues.tool
         var tool = toolSlot.resolved !== undefined ? toolSlot.resolved.toLowerCase() : null
         const targetAttributeSlot = slotValues.targetAttribute
-        var targetAttribute = targetAttributeSlot.resolved !== undefined ? targetAttributeSlot.resolved.toLowerCase() : null 
-        if (targetAttribute !== null){
-            if (!(targetAttribute.includes("klemmend") || targetAttribute.includes("schloss"))){
+        var targetAttribute = targetAttributeSlot.resolved !== undefined ? targetAttributeSlot.resolved.toLowerCase() : null
+        if (targetAttribute !== null) {
+            if (!(targetAttribute.includes("klemmend") || targetAttribute.includes("schloss"))) {
                 targetAttribute = null
             }
         }
 
-        if (tool !== null){
-            if (tool === "brechstange"){
-                if (!sessionAttributes.hasCrowbar){
+        if (tool !== null) {
+            if (tool === "brechstange") {
+                if (!sessionAttributes.hasCrowbar) {
                     return handlerInput.responseBuilder
                         .speak("Du hast noch keine Brechstange gefunden.")
                         .reprompt("Du hast noch keine Brechstange gefunden.")
                         .getResponse();
                 }
             }
-            else if (tool === "bolzenschneider"){
-                if (!sessionAttributes.hasBoltCutter){
+            else if (tool === "bolzenschneider") {
+                if (!sessionAttributes.hasBoltCutter) {
                     return handlerInput.responseBuilder
                         .speak("Du hast noch keinen Bolzenschneider gefunden.")
                         .reprompt("Du hast noch keinen Bolzenschneider gefunden.")
@@ -258,50 +377,50 @@ const UseIntentHandler = {
 
         const potentialTargets = []
         room.objects.forEach(o => {
-            if (o.desc.toLowerCase().includes(target.toLowerCase())){
+            if (o.desc.toLowerCase().includes(target.toLowerCase())) {
                 potentialTargets.push(o)
             }
         })
-        
+
         const idxsToRemove = []
-        if (targetAttribute != null){
+        if (targetAttribute != null) {
             potentialTargets.forEach(o => {
-                if (targetAttribute.includes("klemmend")){
-                    if (!o.isJammed){
+                if (targetAttribute.includes("klemmend")) {
+                    if (!o.isJammed) {
                         idxsToRemove.push(potentialTargets.indexOf(o))
                     }
                 }
-                else if (targetAttribute.includes("schloss")){
-                    if (!o.isLocked){
+                else if (targetAttribute.includes("schloss")) {
+                    if (!o.isLocked) {
                         idxsToRemove.push(potentialTargets.indexOf(o))
                     }
                 }
-           })
-        } 
+            })
+        }
         else if (potentialTargets.length > 1) {
-            potentialTargets.forEach( o=> {
-                if (o.isJammed || o.isLocked){
+            potentialTargets.forEach(o => {
+                if (o.isJammed || o.isLocked) {
                     idxsToRemove.push(potentialTargets(indexOf(o)))
                 }
             })
         }
 
         idxsToRemove.reverse()
-        idxsToRemove.forEach( i => {
+        idxsToRemove.forEach(i => {
             potentialTargets.splice(i, 1)
         })
 
         var speakOutput = ""
-        if (potentialTargets.length > 1){
-            speakOutput = "Wiederhole dich. Welche " + target + " meinst du?" 
+        if (potentialTargets.length > 1) {
+            speakOutput = "Wiederhole dich. Welche " + target + " meinst du?"
         }
-        else if (potentialTargets.length === 0){
+        else if (potentialTargets.length === 0) {
             speakOutput = "Dieses Objekt gibt es hier nicht."
         }
         else {
             let definitiveTarget = potentialTargets[0]
-            if (definitiveTarget.isJammed){
-                if (tool === "brechstange" && sessionAttributes.hasCrowbar === true){
+            if (definitiveTarget.isJammed) {
+                if (tool === "brechstange" && sessionAttributes.hasCrowbar === true) {
                     speakOutput = openObject(definitiveTarget, handlerInput)
                 }
                 else {
@@ -309,7 +428,7 @@ const UseIntentHandler = {
                 }
             }
             else if (definitiveTarget.isLocked) {
-                if (tool === "bolzenschneider" && sessionAttributes.hasBoltCutter === true){
+                if (tool === "bolzenschneider" && sessionAttributes.hasBoltCutter === true) {
                     speakOutput = openObject(definitiveTarget, handlerInput)
                 }
                 else {
@@ -339,26 +458,26 @@ const UnjamDoorIntentHandler = {
         const room = setup.rooms[sessionAttributes.location]
         const filledSlots = handlerInput.requestEnvelope.request.intent.slots;
         const slotValues = getSlotValues(filledSlots);
-        
+
         var speakOutput = ""
-        if (!room.connections.includes("end")){
+        if (!room.connections.includes("end")) {
             speakOutput = "In diesem Raum gibt es keine klemmende Tür."
         }
-        else if (!setup.rooms.end.isJammed){
+        else if (!setup.rooms.end.isJammed) {
             speakOutput = "Du hast die Tür zum letzten Raum bereits geöffnet."
         }
         else {
             const toolSlot = slotValues.tool
             var tool = toolSlot.resolved !== undefined ? toolSlot.resolved.toLowerCase() : null
-            if (tool === undefined){
+            if (tool === undefined) {
                 speakOutput = "Du musst eine Brechstange benutzen, um die Tür zu öffnen."
             }
             else {
-                if (!["brechstange", "brech stange"].includes(tool)){
+                if (!["brechstange", "brech stange"].includes(tool)) {
                     speakOutput = "Du musst eine Brechstange benutzen, um die Tür zu öffnen."
                 }
                 else {
-                    if (sessionAttributes.hasCrowbar){
+                    if (sessionAttributes.hasCrowbar) {
                         setup.rooms.end.isJammed = false
                         speakOutput = "Du kannst die Tür aufstemmen. Sie lässt sich jetzt wieder problemlos öffnen und schließen."
                     }
@@ -382,7 +501,7 @@ const EnterCodeIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'EnterCodeIntent';
     },
-    handle(handlerInput){
+    handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
         const setup = sessionAttributes.setup
         const room = setup.rooms[sessionAttributes.location]
@@ -392,45 +511,45 @@ const EnterCodeIntentHandler = {
 
         var speakOutput = ""
         var gameEnded = false
-        if (room !== setup.rooms.end){
+        if (room !== setup.rooms.end) {
             speakOutput = "Du kannst den Ausgangscode in diesem Raum nicht eingeben."
         }
         else {
-            if (digits.resolved === undefined){
+            if (digits.resolved === undefined) {
                 return handlerInput.responseBuilder
-                .speak("Welchen vierstelligen Code möchtest du eingeben? Denk daran, dass du nur noch " + sessionAttributes.remainingCodeTries.toString() + " Versuche hast!")
-                .addElicitSlotDirective("digits")
-                .getResponse();
+                    .speak("Welchen vierstelligen Code möchtest du eingeben? Denk daran, dass du nur noch " + sessionAttributes.remainingCodeTries.toString() + " Versuche hast!")
+                    .addElicitSlotDirective("digits")
+                    .getResponse();
             }
             else {
                 const userInput = digits.resolved
-                if (isNaN(parseInt(userInput)) || userInput.length !== 4){
+                if (isNaN(parseInt(userInput)) || userInput.length !== 4) {
                     return handlerInput.responseBuilder
-                    .speak("Du musst einen vierstelligen Zahlencode eingeben. Welchen Code möchtest du eingeben?")
-                    .addElicitSlotDirective("digits")
-                    .getResponse();
+                        .speak("Du musst einen vierstelligen Zahlencode eingeben. Welchen Code möchtest du eingeben?")
+                        .addElicitSlotDirective("digits")
+                        .getResponse();
                 }
                 let slot = filledSlots.digits
-                if (slot.confirmationStatus === "NONE"){
+                if (slot.confirmationStatus === "NONE") {
                     return handlerInput.responseBuilder
-                    .speak("Du möchtest " + digits.resolved + " eingeben, habe ich das richtig verstanden?")
-                    .addConfirmSlotDirective("digits")
-                    .getResponse();
+                        .speak("Du möchtest " + digits.resolved + " eingeben, habe ich das richtig verstanden?")
+                        .addConfirmSlotDirective("digits")
+                        .getResponse();
                 }
-                else if (slot.confirmationStatus === "DENIED"){
+                else if (slot.confirmationStatus === "DENIED") {
                     return handlerInput.responseBuilder
-                    .speak("Okay. Möchtest du einen anderen vierstelligen Code eingeben? Dann sag ihn mir jetzt.")
-                    .addElicitSlotDirective("digits")
-                    .getResponse();
+                        .speak("Okay. Möchtest du einen anderen vierstelligen Code eingeben? Dann sag ihn mir jetzt.")
+                        .addElicitSlotDirective("digits")
+                        .getResponse();
                 }
                 else {
-                    if (userInput === setup.code){
+                    if (userInput === setup.code) {
                         speakOutput = "Der Code ist richtig! Du hast gewonnen! Bis zum nächsten Mal."
                         gameEnded = true
                     }
                     else {
                         sessionAttributes.remainingCodeTries -= 1
-                        if (sessionAttributes.remainingCodeTries > 0){
+                        if (sessionAttributes.remainingCodeTries > 0) {
                             speakOutput = "Der Code ist falsch! Du hast jetzt nur noch " + sessionAttributes.remainingCodeTries.toString() + " Versuche!"
                         }
                         else {
@@ -441,16 +560,16 @@ const EnterCodeIntentHandler = {
                 }
             }
         }
-        if (!gameEnded){
+        if (!gameEnded) {
             return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
+                .speak(speakOutput)
+                .getResponse();
         }
         else {
             return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .withShouldEndSession(true)
-            .getResponse();
+                .speak(speakOutput)
+                .withShouldEndSession(true)
+                .getResponse();
         }
     }
 }
@@ -544,7 +663,7 @@ const IntentReflectorHandler = {
     },
     handle(handlerInput) {
         const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-        const speakOutput = handlerInput.t('REFLECTOR_MSG', {intentName: intentName});
+        const speakOutput = handlerInput.t('REFLECTOR_MSG', { intentName: intentName });
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -572,56 +691,46 @@ const ErrorHandler = {
     }
 };
 
-// This request interceptor will bind a translation function 't' to the handlerInput
-const LocalisationRequestInterceptor = {
-    process(handlerInput) {
-        i18n.init({
-            lng: Alexa.getLocale(handlerInput.requestEnvelope),
-            resources: languageStrings
-        }).then((t) => {
-            handlerInput.t = (...args) => t(...args);
-        });
-    }
-};
+
 
 function getSlotValues(filledSlots) {
     const slotValues = {};
-  
+
     console.log(`The filled slots: ${JSON.stringify(filledSlots)}`);
     Object.keys(filledSlots).forEach((item) => {
-      const name = filledSlots[item].name;
-  
-      if (filledSlots[item] &&
-        filledSlots[item].resolutions &&
-        filledSlots[item].resolutions.resolutionsPerAuthority[0] &&
-        filledSlots[item].resolutions.resolutionsPerAuthority[0].status &&
-        filledSlots[item].resolutions.resolutionsPerAuthority[0].status.code) {
-        switch (filledSlots[item].resolutions.resolutionsPerAuthority[0].status.code) {
-          case 'ER_SUCCESS_MATCH':
+        const name = filledSlots[item].name;
+
+        if (filledSlots[item] &&
+            filledSlots[item].resolutions &&
+            filledSlots[item].resolutions.resolutionsPerAuthority[0] &&
+            filledSlots[item].resolutions.resolutionsPerAuthority[0].status &&
+            filledSlots[item].resolutions.resolutionsPerAuthority[0].status.code) {
+            switch (filledSlots[item].resolutions.resolutionsPerAuthority[0].status.code) {
+                case 'ER_SUCCESS_MATCH':
+                    slotValues[name] = {
+                        synonym: filledSlots[item].value,
+                        resolved: filledSlots[item].resolutions.resolutionsPerAuthority[0].values[0].value.name,
+                        isValidated: true,
+                    };
+                    break;
+                case 'ER_SUCCESS_NO_MATCH':
+                    slotValues[name] = {
+                        synonym: filledSlots[item].value,
+                        resolved: filledSlots[item].value,
+                        isValidated: false,
+                    };
+                    break;
+                default:
+                    break;
+            }
+        } else {
             slotValues[name] = {
-              synonym: filledSlots[item].value,
-              resolved: filledSlots[item].resolutions.resolutionsPerAuthority[0].values[0].value.name,
-              isValidated: true,
+                synonym: filledSlots[item].value,
+                resolved: filledSlots[item].value,
+                isValidated: false,
             };
-            break;
-          case 'ER_SUCCESS_NO_MATCH':
-            slotValues[name] = {
-              synonym: filledSlots[item].value,
-              resolved: filledSlots[item].value,
-              isValidated: false,
-            };
-            break;
-          default:
-            break;
         }
-      } else {
-        slotValues[name] = {
-          synonym: filledSlots[item].value,
-          resolved: filledSlots[item].value,
-          isValidated: false,
-        };
-      }
     }, this);
-  
+
     return slotValues;
-  }
+}

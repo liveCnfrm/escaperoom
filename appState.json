@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "escapeRoom.js",
         "cursor": {
-          "lineNumber": 12,
-          "column": 9
+          "lineNumber": 75,
+          "column": 17
         },
         "config": {
           "runtime": "nodejs10.x",
@@ -28,7 +28,16 @@
             "config": {}
           }
         ],
-        "lastUpdated": 1624803512591
+        "lastUpdated": 1624803512591,
+        "testCases": {
+          "2c37a0af-4d58-4367-9ae7-0280526961a5": {
+            "id": "2c37a0af-4d58-4367-9ae7-0280526961a5",
+            "name": "Test event",
+            "functionId": "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8",
+            "event": "{\r\n    \"key1\": \"value1\",\r\n    \"key2\": \"value2\",\r\n    \"key3\": \"value3\"\r\n}",
+            "eventTemplate": "hello-world"
+          }
+        }
       },
       "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2": {
         "id": "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
