@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "escapeRoom.js",
         "cursor": {
-          "lineNumber": 217,
-          "column": 71
+          "lineNumber": 135,
+          "column": 30
         },
         "config": {
           "runtime": "nodejs10.x",

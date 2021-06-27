@@ -139,7 +139,7 @@ const HelpMeIntentHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speakOutput = 'Um im Spiel voran zu kommen, kannst du folgende Befehle geben: ';
+        const speakOutput = 'Um im Spiel voranzukommen, kannst du folgende Befehle geben:  ';
         return handlerInput.responseBuilder
             .speak(speakOutput)
             //.reprompt(speakOutput)
@@ -155,7 +155,10 @@ const ReceiveHintIntentHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speakOutput = 'This is my custom intent handler';
+        const speakOutput = 'Hier ein Hinweis für dich aus diesem Raum: ';
+
+        //TODO: Hints hinzufügen
+        //speakOutput += "RoomHint"; 
         return handlerInput.responseBuilder
             .speak(speakOutput)
             //.reprompt(speakOutput)
