@@ -82,6 +82,17 @@
           ]
         }
       }
+    },
+    "alexaSK98695b272310escapeRoomPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "escapeRoom"
+        },
+        "Principal": "alexa-appkit.amazon.com",
+        "EventSourceToken": "amzn1.ask.skill.98695b27-2310-42dc-b1b3-8fda0a64bcca"
+      }
     }
   }
 }

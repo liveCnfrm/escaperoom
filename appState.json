@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "escapeRoom.js",
         "cursor": {
-          "lineNumber": 4,
-          "column": 1
+          "lineNumber": 1,
+          "column": 35
         },
         "config": {
           "runtime": "nodejs10.x",
@@ -22,8 +22,13 @@
           "layers": [],
           "name": "escapeRoom"
         },
-        "triggers": [],
-        "lastUpdated": 1624802532850
+        "triggers": [
+          {
+            "resourceName": "alexaSK98695b27231042dcb1b38fda0a64bcca",
+            "config": {}
+          }
+        ],
+        "lastUpdated": 1624802712843
       },
       "cc33052c-8ce1-4b33-afd0-159db8255b06": {
         "id": "cc33052c-8ce1-4b33-afd0-159db8255b06",
@@ -34,10 +39,10 @@
         "children": [],
         "isRemovable": true,
         "filePath": "index.js",
-        "lastUpdated": 1624802525413,
+        "lastUpdated": 1624802709544,
         "cursor": {
-          "lineNumber": 629,
-          "column": 5
+          "lineNumber": 1,
+          "column": 1
         }
       },
       "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2": {
@@ -49,7 +54,11 @@
         "children": [],
         "isRemovable": true,
         "filePath": "init.js",
-        "lastUpdated": 1624802535401
+        "lastUpdated": 1624802535401,
+        "cursor": {
+          "lineNumber": 4,
+          "column": 25
+        }
       },
       "354626f3-fac0-4909-8316-88c526f3a33d": {
         "id": "354626f3-fac0-4909-8316-88c526f3a33d",
@@ -60,7 +69,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "languageStrings.js",
-        "lastUpdated": 1624802323631
+        "lastUpdated": 1624802563768
       },
       "a332afcc-a874-43fa-ad76-8fd59a7bf9e9": {
         "id": "a332afcc-a874-43fa-ad76-8fd59a7bf9e9",
@@ -108,17 +117,22 @@
       }
     },
     "openFiles": [
-      "cc33052c-8ce1-4b33-afd0-159db8255b06",
-      "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
-      "354626f3-fac0-4909-8316-88c526f3a33d",
-      "a332afcc-a874-43fa-ad76-8fd59a7bf9e9",
-      "d9f994ea-920c-4b0f-a542-b483334ca79d",
-      "d7cf6e28-df40-4468-9c7f-0e6973755430",
-      "03d86a78-a713-4b02-a9e1-fa4a5a0b2171",
-      "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8"
+      "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8",
+      "cc33052c-8ce1-4b33-afd0-159db8255b06"
     ],
-    "currentFileId": "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
-    "resources": {},
+    "currentFileId": "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8",
+    "resources": {
+      "alexaSK98695b27231042dcb1b38fda0a64bcca": {
+        "name": "alexaSK98695b27231042dcb1b38fda0a64bcca",
+        "type": "ALEXA",
+        "config": {
+          "type": 1,
+          "verifiedID": true,
+          "skillID": "amzn1.ask.skill.98695b27-2310-42dc-b1b3-8fda0a64bcca",
+          "applicationID": ""
+        }
+      }
+    },
     "customTemplate": {
       "syntax": "JSON",
       "overrideDefault": false,
