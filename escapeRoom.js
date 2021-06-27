@@ -3,6 +3,11 @@ const init = require('./init.js');
 const Alexa = require('ask-sdk');
 let skill;
 
+// i18n library dependency, we use it below in a localisation interceptor
+const i18n = require('i18next');
+// i18n strings for all supported locales
+const languageStrings = require('./languageStrings');
+
 exports.handler = async function (event, context) {
     //console.log('REQUEST ' + JSON.stringify(event));
     if (!skill) {
@@ -236,11 +241,6 @@ const LookForObjectsIntentHandler = {
             .getResponse();
     }
 };
-
-
-
-
-
 
 const DoorIntentHandler = {
     canHandle(handlerInput) {
@@ -573,6 +573,21 @@ const EnterCodeIntentHandler = {
         }
     }
 }
+
+
+// This request interceptor will bind a translation function 't' to the handlerInput
+const LocalisationRequestInterceptor = {
+    process(handlerInput) {
+        i18n.init({
+            lng: Alexa.getLocale(handlerInput.requestEnvelope),
+            resources: languageStrings
+        }).then((t) => {
+            handlerInput.t = (...args) => t(...args);
+        });
+    }
+};
+
+
 
 const HelloWorldIntentHandler = {
     canHandle(handlerInput) {
