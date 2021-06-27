@@ -20,17 +20,17 @@ exports.handler = async function (event, context) {
                 DoorIntentHandler,
                 UseIntentHandler,
                 UnjamDoorIntentHandler,
-                EnterCodeIntentHandler,
-                HelpIntentHandler,
-                CancelAndStopIntentHandler,
-                FallbackIntentHandler,
-                SessionEndedRequestHandler,
-                IntentReflectorHandler,
+                EnterCodeIntentHandler,                
                 HelpMeIntentHandler,
                 ReceiveHintIntentHandler,
                 LookForDoorsIntentHandler,
                 DescribeRoomIntentHandler,
-                LookForObjectsIntentHandler
+                LookForObjectsIntentHandler,
+                HelpIntentHandler,
+                CancelAndStopIntentHandler,
+                FallbackIntentHandler,
+                SessionEndedRequestHandler,
+                IntentReflectorHandler
 
             ).create();
     }
@@ -133,40 +133,40 @@ function getRoomByName(name, rooms) {
 
 const HelpMeIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'HelpMeIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelpMeIntent';
     },
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is my custom intent handler';
+        const speakOutput = 'Um im Spiel voran zu kommen, kannst du folgende Befehle geben: ';
         return handlerInput.responseBuilder
-            .speak(speechText)
-            .withShouldEndSession(false)
+            .speak(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
 };
 
 const ReceiveHintIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'ReceiveHintIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ReceiveHintIntent';
     },
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is my custom intent handler';
+        const speakOutput = 'This is my custom intent handler';
         return handlerInput.responseBuilder
-            .speak(speechText)
-            .withShouldEndSession(false)
+            .speak(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
 };
 
 const LookForDoorsIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'LookForDoorsIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'LookForDoorsIntent';
     },
     handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
@@ -185,18 +185,17 @@ const LookForDoorsIntentHandler = {
             }
             else { speakOutput += "." }
         }
-
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
 };
 
 const DescribeRoomIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'DescribeRoomIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'DescribeRoomIntent';
     },
     handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
@@ -204,18 +203,18 @@ const DescribeRoomIntentHandler = {
         const room = setup.rooms[sessionAttributes.location]
 
         let speakOutput = "Du gehst durch die Tür. Du befindest dich in " + room.desc + "."
-
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
 };
 
+
 const LookForObjectsIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'LookForObjectsIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'LookForObjectsIntent';
     },
     handle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
@@ -237,10 +236,12 @@ const LookForObjectsIntentHandler = {
         }
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
-};
+}
+
+
 
 const DoorIntentHandler = {
     canHandle(handlerInput) {
@@ -574,28 +575,13 @@ const EnterCodeIntentHandler = {
     }
 }
 
-
-// This request interceptor will bind a translation function 't' to the handlerInput
-const LocalisationRequestInterceptor = {
-    process(handlerInput) {
-        i18n.init({
-            lng: Alexa.getLocale(handlerInput.requestEnvelope),
-            resources: languageStrings
-        }).then((t) => {
-            handlerInput.t = (...args) => t(...args);
-        });
-    }
-};
-
-
-
 const HelloWorldIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.t('HELLO_MSG');
+        const speakOutput = "Hello World Intent"
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -610,7 +596,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.t('HELP_MSG');
+        const speakOutput = "This is the Help Intent"
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -626,7 +612,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.t('GOODBYE_MSG');
+        const speakOutput = "Auf Wiedersehen"
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -644,7 +630,7 @@ const FallbackIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.t('FALLBACK_MSG');
+        const speakOutput = "Diese Aktion gibt es nicht. Sag Erkläre mir das Spiel, um eine erneute Anleitung für das Spiel zu bekommen";
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -678,7 +664,7 @@ const IntentReflectorHandler = {
     },
     handle(handlerInput) {
         const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-        const speakOutput = handlerInput.t('REFLECTOR_MSG', { intentName: intentName });
+        const speakOutput = "This is IntentReflectorHandler";
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -686,6 +672,11 @@ const IntentReflectorHandler = {
             .getResponse();
     }
 };
+
+
+
+
+
 /**
  * Generic error handling to capture any syntax or routing errors. If you receive an error
  * stating the request handler chain is not found, you have not implemented a handler for
@@ -696,7 +687,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = handlerInput.t('ERROR_MSG');
+        const speakOutput = 'Sorry, your skill encountered an error';
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder
