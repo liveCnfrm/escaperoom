@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "escapeRoom.js",
         "cursor": {
-          "lineNumber": 1,
-          "column": 35
+          "lineNumber": 12,
+          "column": 9
         },
         "config": {
           "runtime": "nodejs10.x",
@@ -28,22 +28,7 @@
             "config": {}
           }
         ],
-        "lastUpdated": 1624802712843
-      },
-      "cc33052c-8ce1-4b33-afd0-159db8255b06": {
-        "id": "cc33052c-8ce1-4b33-afd0-159db8255b06",
-        "parent": null,
-        "name": "index.js",
-        "type": "JS_FILE",
-        "isDirectory": false,
-        "children": [],
-        "isRemovable": true,
-        "filePath": "index.js",
-        "lastUpdated": 1624802709544,
-        "cursor": {
-          "lineNumber": 1,
-          "column": 1
-        }
+        "lastUpdated": 1624803512591
       },
       "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2": {
         "id": "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
@@ -117,8 +102,7 @@
       }
     },
     "openFiles": [
-      "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8",
-      "cc33052c-8ce1-4b33-afd0-159db8255b06"
+      "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8"
     ],
     "currentFileId": "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8",
     "resources": {
@@ -169,7 +153,8 @@
     "projectRegion": "eu-central-1",
     "platform": "AWS",
     "language": "nodejs",
-    "platformRegions": {}
+    "platformRegions": {},
+    "lastSave": 1624803684061
   },
   "VCS_STATE": {
     "provider": "GitHub",

@@ -9,7 +9,7 @@ exports.handler = async function (event, context) {
         skill = Alexa.SkillBuilders.custom()
             .addErrorHandlers(ErrorHandler)
             .addRequestHandlers(
- LaunchRequestHandler,
+        LaunchRequestHandler,
         HelloWorldIntentHandler,
         LookAroundIntentHandler,
         DoorIntentHandler,
@@ -24,10 +24,13 @@ exports.handler = async function (event, context) {
             ).create();
     }
 
+    
+
     const response = await skill.invoke(event, context);
     //console.log('RESPONSE :' + JSON.stringify(response));
     return response;
 };
+
 
 // i18n library dependency, we use it below in a localisation interceptor
 const i18n = require('i18next');
