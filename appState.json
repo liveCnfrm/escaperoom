@@ -1,0 +1,167 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8": {
+        "id": "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8",
+        "parent": null,
+        "name": "escapeRoom.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "escapeRoom.js",
+        "cursor": {
+          "lineNumber": 4,
+          "column": 1
+        },
+        "config": {
+          "runtime": "nodejs10.x",
+          "handler": "handler",
+          "timeout": 60,
+          "memory": 128,
+          "layers": [],
+          "name": "escapeRoom"
+        },
+        "triggers": [],
+        "lastUpdated": 1624802532850
+      },
+      "cc33052c-8ce1-4b33-afd0-159db8255b06": {
+        "id": "cc33052c-8ce1-4b33-afd0-159db8255b06",
+        "parent": null,
+        "name": "index.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "index.js",
+        "lastUpdated": 1624802525413,
+        "cursor": {
+          "lineNumber": 629,
+          "column": 5
+        }
+      },
+      "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2": {
+        "id": "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
+        "parent": null,
+        "name": "init.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "init.js",
+        "lastUpdated": 1624802535401
+      },
+      "354626f3-fac0-4909-8316-88c526f3a33d": {
+        "id": "354626f3-fac0-4909-8316-88c526f3a33d",
+        "parent": null,
+        "name": "languageStrings.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "languageStrings.js",
+        "lastUpdated": 1624802323631
+      },
+      "a332afcc-a874-43fa-ad76-8fd59a7bf9e9": {
+        "id": "a332afcc-a874-43fa-ad76-8fd59a7bf9e9",
+        "parent": null,
+        "name": "local-debugger.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "local-debugger.js",
+        "lastUpdated": 1624802332152
+      },
+      "d9f994ea-920c-4b0f-a542-b483334ca79d": {
+        "id": "d9f994ea-920c-4b0f-a542-b483334ca79d",
+        "parent": null,
+        "name": "package.json",
+        "type": "JSON_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "package.json",
+        "lastUpdated": 1624802339386
+      },
+      "d7cf6e28-df40-4468-9c7f-0e6973755430": {
+        "id": "d7cf6e28-df40-4468-9c7f-0e6973755430",
+        "parent": null,
+        "name": "test.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "test.js",
+        "lastUpdated": 1624802347439
+      },
+      "03d86a78-a713-4b02-a9e1-fa4a5a0b2171": {
+        "id": "03d86a78-a713-4b02-a9e1-fa4a5a0b2171",
+        "parent": null,
+        "name": "util.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "util.js",
+        "lastUpdated": 1624802355972
+      }
+    },
+    "openFiles": [
+      "cc33052c-8ce1-4b33-afd0-159db8255b06",
+      "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
+      "354626f3-fac0-4909-8316-88c526f3a33d",
+      "a332afcc-a874-43fa-ad76-8fd59a7bf9e9",
+      "d9f994ea-920c-4b0f-a542-b483334ca79d",
+      "d7cf6e28-df40-4468-9c7f-0e6973755430",
+      "03d86a78-a713-4b02-a9e1-fa4a5a0b2171",
+      "9f4e7d10-b83c-49f1-b9b7-5e192c39f8d8"
+    ],
+    "currentFileId": "587f3efa-3f1f-4b9b-9ee6-0d520aab51b2",
+    "resources": {},
+    "customTemplate": {
+      "syntax": "JSON",
+      "overrideDefault": false,
+      "dialect": null,
+      "definitions": null
+    },
+    "envVariables": [
+      {
+        "lambdaId": "all",
+        "varKey": "SIGMA_AWS_ACC_ID",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": false
+      }
+    ],
+    "packageJSON": {
+      "dependencies": {
+        "ask-sdk": {
+          "name": "ask-sdk",
+          "language": "nodejs",
+          "version": "2.7.0",
+          "dev": false,
+          "notRemovable": false
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "sigmaVersion": "1.8.0",
+    "projectName": "escapeRoom",
+    "projectDescription": "",
+    "projectVersion": "1.0.0",
+    "projectRegion": "eu-central-1",
+    "platform": "AWS",
+    "language": "nodejs",
+    "platformRegions": {}
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "escaperoom",
+      "url": "https://github.com/liveCnfrm/escaperoom"
+    }
+  }
+}
